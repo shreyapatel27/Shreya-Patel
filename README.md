@@ -1,4 +1,3 @@
-
 This repository shows my method for solving a cable-supported structure using force balance and MATLAB. The main aim of this study was to find the unknown cable tensions and to understand how manual equilibrium equations can be solved using a computational approach. By applying force balance at the joint and converting the equations into matrix form, MATLAB can be used to obtain the results quickly and accurately. This work helps in connecting basic engineering mechanics with practical numerical solving techniques.
 clc;
 clear;
