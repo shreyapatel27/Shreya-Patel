@@ -96,7 +96,7 @@ For a fixed cable angle:
 
 Thus, the cable tensions vary with the applied load and cable geometry.
 
-🔷 7. Learning Outcomes
+7. Learning Outcomes
 
 - Application of static equilibrium equations
 - Matrix formulation of engineering equations
