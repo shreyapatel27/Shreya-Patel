@@ -1,80 +1,110 @@
-This repository shows my method for solving a cable-supported structure using force balance and MATLAB. The main aim of this study was to find the unknown cable tensions and to understand how manual equilibrium equations can be solved using a computational approach. By applying force balance at the joint and converting the equations into matrix form, MATLAB can be used to obtain the results quickly and accurately. This work helps in connecting basic engineering mechanics with practical numerical solving techniques.
-clc;
-clear;
-close all;
+Cable-Supported Structure Using Force Balance and MATLAB
 
-% USER INPUTS
-W = input("Enter Load W (lb): ");          % Load at joint B
-theta_deg = input("Enter Angle (degrees): "); 
+1. Project Overview
 
-theta = deg2rad(theta_deg);                % Convert to radians
+This case study analyzes a cable-supported structure using the principles of static equilibrium and MATLAB. The objective is to determine the unknown tensions in two supporting cables subjected to an applied load.
 
-T_BA_limit = input("Enter allowable limit of cable BA (lb): ");
-T_BC_limit = input("Enter allowable limit of cable BC (lb): ");
+The force equilibrium equations are formulated at the joint and converted into matrix form. MATLAB is then used to solve the simultaneous equations and obtain the cable tensions.
 
-fprintf('Governing Equilibrium Equations:\n');
-fprintf('1) Sum Fx = 0: T_BA - T_BC*cos(theta) = 0\n');
-fprintf('2) Sum Fy = 0: T_BC*sin(theta) - W = 0\n\n');
+The model also includes an allowable tension check, equilibrium verification, and a graph showing the variation of cable tension with applied load.
+ 2. Problem Description
 
-% Matrix form: [A]{T} = {B}
-A = [1  -cos(theta);     % From Sum Fx = 0
-     0   sin(theta)];    % From Sum Fy = 0
+A joint is supported by two cables:
 
-B = [0;
-     W];
+- Cable BA – horizontal
+- Cable BC – inclined at an angle \theta
 
-% Solve for tensions
+A downward load W acts at the joint.
+
+The objective is to:
+
+- Formulate the force balance equations.
+- Determine the unknown cable tensions.
+- Solve the equations using MATLAB.
+- Check the calculated tensions against allowable limits.
+- Verify static equilibrium.
+
+ 3. Mathematical Formulation
+
+For static equilibrium:
+
+[\sum F_x=0]
+
+[T_{BA}-T_{BC}\cos\theta=0]
+
+and
+
+[\sum F_y=0]
+
+[T_{BC}\sin\theta-W=0]
+
+These equations are written in matrix form as:
+
+[\begin{bmatrix}
+1&-\cos\theta\
+0&\sin\theta
+\end{bmatrix}
+\begin{bmatrix}
+T_{BA}\
+T_{BC}
+\end{bmatrix}
+
+\begin{bmatrix}
+0\
+W
+\end{bmatrix}]
+
+The system is solved in MATLAB using the matrix left-division operator:
+
 T = A\B;
 
-T_BA = T(1);   % Horizontal cable
-T_BC = T(2);   % Sloped cable
+ 4. MATLAB Implementation
 
-fprintf('\nRESULTS\n');
-fprintf('Load W = %.2f lb\n', W);
-fprintf('Angle = %.2f degrees\n\n', theta_deg);
+The MATLAB program:
 
-fprintf('Tension in cable BA (horizontal) = %.2f lb\n', T_BA);
-fprintf('Tension in cable BC (sloped) = %.2f lb\n', T_BC);
+1. Accepts the applied load, cable angle, and allowable cable tensions as inputs.
+2. Constructs the equilibrium matrix.
+3. Calculates T_{BA} and T_{BC}.
+4. Compares the calculated tensions with their allowable limits.
+5. Verifies that \sum F_x and \sum F_y are approximately zero.
+6. Plots cable tension against the applied load.
 
-%% SMART ALERT SYSTEM
+ 5. Results
 
-fprintf('\nSAFETY CHECK\n');
+The program provides:
 
-if T_BA > T_BA_limit
-    warning('ALERT: Cable BA is OVERLOADED!');
-else
-    disp('Cable BA is within safe limit.');
-end
+- Applied load W
+- Cable angle \theta
+- Tension in cable BA
+- Tension in cable BC
+- Safety-limit status of both cables
+- Horizontal and vertical equilibrium checks
 
-if T_BC > T_BC_limit
-    warning('ALERT: Cable BC is OVERLOADED!');
-else
-    disp('Cable BC is within safe limit.');
-end
+For a valid equilibrium solution:
 
-%% EQUILIBRIUM CHECK
+[\sum F_x\approx0,\qquad \sum F_y\approx0]
 
-Fx = T_BA - T_BC*cos(theta);
-Fy = T_BC*sin(theta) - W;
+ 6. Graphical Analysis
 
-fprintf('\nEQUILIBRIUM CHECK\n');
-fprintf('Sum Fx = %.6f (should be ~0)\n', Fx);
-fprintf('Sum Fy = %.6f (should be ~0)\n', Fy);
+A parametric plot is generated for a load range of 0–200 lb, showing the variation of tension in cables BA and BC with applied load.
 
-%% GRAPH: Tension vs Load
+For a fixed cable angle:
 
-W_range = 0:10:200;        % Load values
+[T_{BC}=\frac{W}{\sin\theta}] and
 
-TBC_vals = W_range / sin(theta);
-TBA_vals = TBC_vals .* cos(theta);
+[T_{BA}=T_{BC}\cos\theta]
 
-figure;
-plot(W_range, TBA_vals, 'LineWidth', 2); 
-hold on;
-plot(W_range, TBC_vals, 'LineWidth', 2);
+Thus, the cable tensions vary with the applied load and cable geometry.
 
-grid on;
-xlabel('Load W (lb)');
-ylabel('Cable Tension (lb)');
-title('Cable Tension vs Load');
-legend('Tension in BA','Tension in BC');
+🔷 7. Learning Outcomes
+
+- Application of static equilibrium equations
+- Matrix formulation of engineering equations
+- Numerical solution using MATLAB
+- Cable tension and allowable-limit evaluation
+- Equilibrium verification
+- Graphical analysis of load–tension relationship
+
+Conclusion
+
+This case study demonstrates the application of force balance and matrix-based numerical solving to determine cable tensions in a simple cable-supported structure. MATLAB provides an efficient method for solving the equilibrium equations, verifying the results, and performing basic tension-limit and load-variation analysis.
